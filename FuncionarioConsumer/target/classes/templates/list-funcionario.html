@@ -43,31 +43,52 @@
     <table id="tabela">
         <tr>
             <th>Nome</th>
-            <th>Vale Transporte</th>
+            <th>VT</th>
+            <th>Sal base</th>
             <th>Dependentes <14</th>
             <th>Dependentes IR</th>
-            <th>Sal base</th>
-            <th>Ações</th>
+            <th>INSS</th>
+            <th>Salário Família</th>
+            <th>Vale Transporte</th>
+            <th>IRRF</th>
+            <th>Sal. Líquido</th>
+            <th colspan="3">Ações</th>
         </tr>
-        <tr th:each="funcionario : ${listafuncionario}">
-            <td th:text="${funcionario.nome}" ></td>
-            <td th:text="${funcionario.tipoTexto}"></td>
-            <td th:text="${funcionario.dep14}"></td>
-            <td th:text="${funcionario.depir}"></td>
-            <td th:text="${funcionario.salBaseTotalFormatado}"></td>
+        <tr th:each="cf : ${listcalculos}">
+            <td th:text="${cf.funcionario.nome}" ></td>
+            <td th:text="${cf.funcionario.tipoTexto}"></td>
+            <td th:text="${cf.funcionario.salBaseTotalFormatado}"></td>
+            <td th:text="${cf.funcionario.dep14}"></td>
+            <td th:text="${cf.funcionario.depir}"></td>
+            <td th:text="${cf.inssTotalFormatado}"></td>
+            <td th:text="${cf.sfTotalFormatado}"></td>
+            <td th:text="${cf.vtTotalFormatado}"></td>
+            <td th:text="${cf.irrfTotalFormatado}"></td>
+            <td th:text="${cf.salliqTotalFormatado}"></td>
             <td>
-            <a th:href="@{'funcionario/excluir/'+${funcionario.id}}">
+            <a th:href="@{'funcionario/excluir/'+${cf.funcionario.id}}">
                 <button >
                     Excluir
                     <i data-lucide="trash-2"></i>
                 </button>
             </a>
-                <a th:href="@{'funcionario/editar/'+${funcionario.id}}">
+            </td>
+            <td>
+                <a th:href="@{'funcionario/editar/'+${cf.funcionario.id}}">
                 <button >
                     Editar
                     <i data-lucide="pencil"></i>
                 </button>
             </a>
+            </td>
+            <td>
+                <a th:href="@{'funcionario/editar/'+${cf.funcionario.id}}">
+                <button >
+                    Visualizar
+                    <i data-lucide="eye"></i>
+                </button>
+            </a>
+            </td>
             </td>
         </tr>
 

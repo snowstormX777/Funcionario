@@ -1,23 +1,41 @@
 package com.info.FuncionarioConsumer.controller;
 
+import com.info.FuncionarioConsumer.model.CalculaFolha;
 import com.info.FuncionarioConsumer.model.Funcionario;
+import com.info.FuncionarioConsumer.model.Tabelas;
 import com.info.FuncionarioConsumer.service.FuncionarioService;
+import com.info.FuncionarioConsumer.service.TabelasService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequestMapping("/funcionario")
 public class FuncionarioController {
     @Autowired
     private FuncionarioService funcionarioService;
+    @Autowired
+    private TabelasService tabelasService;
 
     @GetMapping("")
     public String listarFuncionario(Model model, HttpSession session) {
         session.removeAttribute("idFuncionario");
-        model.addAttribute("listafuncionario", funcionarioService.pesquisar());
+        List<Funcionario> listFuncionario = funcionarioService.pesquisar();
+        List<CalculaFolha> listCF = new ArrayList<>();
+        Tabelas tabelas = tabelasService.localizar(1);
+        for(Funcionario funcionario : listFuncionario){
+            CalculaFolha cf = new CalculaFolha();
+            cf.setFuncionario(funcionario);
+            cf.setTabela(tabelas);
+            cf.calcula();
+            listCF.add(cf);
+        }
+        model.addAttribute("listcalculos", listCF);
         return "list-funcionario";
     }
 
